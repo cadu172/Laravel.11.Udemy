@@ -12,7 +12,10 @@ class AuthController extends Controller
     }
 
     public function loginSubmit(Request $request) {
-        return "Login submit exec";
+        //return "Login submit exec";
+        echo $request->get("text_username");
+        echo "<br />";
+        echo $request->get("text_password");
     }
 
     public function logout() {
