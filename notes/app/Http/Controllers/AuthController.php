@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -27,7 +28,13 @@ class AuthController extends Controller
             ]
         );
 
-        return "OK";
+        try {
+            DB::connection()->getPdo();
+            return "Conectado com o banco de dados";
+        }
+        catch (\PdoException $e) {
+            return "Erro ao conectar com o banco de dados: " . $e->getMessage();
+        }        
 
     }
 
