@@ -40,9 +40,38 @@ class AuthController extends Controller
         $text_username = $request->input("text_username");
         $text_password = $request->input("text_password");
 
-        $user = User::all()->toArray();
+        //$user = User::all()->toArray();
+        //dd($user);
 
-        dd($user);
+        $user = User::where("name", $text_username)
+            ->where("deleted_at", null)
+            ->first();
+
+        if ( ! $user ) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('loginError', 'E-mail ou senha inválidos');
+        }
+
+        if ( ! password_verify($text_password, $user->password) ) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('loginError', 'E-mail ou senha inválidos');
+        }
+
+        $user->last_login = now();
+        $user->save();
+
+        session([
+            "user" => [
+                "id" => $user->id,
+                "username" => $user->name
+            ]
+        ]);
+
+        echo "Login realizado com sucesso!<br>";
 
     }
 
