@@ -3,12 +3,20 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
-use \App\Http\Middleware\CheckIsLogged;
+use App\Http\Middleware\CheckIsLogged;
+use App\Http\Middleware\CheckIsNotLogged;
 
-Route::GET("/login",[AuthController::class,"login"])->name("login");
-Route::POST("/loginSubmit",[AuthController::class,"loginSubmit"]);
+/**
+ * Rotas de usuários não autenticados
+ */
+Route::middleware(CheckIsNotLogged::class)->group(function() {
+    Route::GET("/login",[AuthController::class,"login"])->name("login");
+    Route::POST("/loginSubmit",[AuthController::class,"loginSubmit"]);    
+});
 
-
+/**
+ * Rotas de usuários autenticados
+ */
 Route::middleware(CheckIsLogged::class)->group(function () {
     Route::GET("/logout",[AuthController::class,"logout"])->name("logout");    
     Route::GET("/newNote",[MainController::class,"newNote"])->name("main.newNote"); 
