@@ -71,8 +71,7 @@ class AuthController extends Controller
             ]
         ]);
 
-        echo "Login realizado com sucesso!<br>";
-
+        return redirect()->to(route("main.index"));
     }
 
     public function logout() {
