@@ -71,7 +71,7 @@ class AuthController extends Controller
             ]
         ]);
 
-        return redirect()->to(route("main.index"));
+        return redirect()->to(route("home"));
     }
 
     public function logout() {

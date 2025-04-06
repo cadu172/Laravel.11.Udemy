@@ -19,6 +19,6 @@ Route::middleware(CheckIsNotLogged::class)->group(function() {
  */
 Route::middleware(CheckIsLogged::class)->group(function () {
     Route::GET("/logout",[AuthController::class,"logout"])->name("logout");    
-    Route::GET("/newNote",[MainController::class,"newNote"])->name("main.newNote"); 
-    Route::GET("/",[MainController::class,"index"])->name("main.index"); 
+    Route::GET("/newNote",[MainController::class,"newNote"])->name("new"); 
+    Route::GET("/",[MainController::class,"index"])->name("home"); 
 });
