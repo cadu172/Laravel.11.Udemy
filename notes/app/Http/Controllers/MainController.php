@@ -11,14 +11,9 @@ class MainController extends Controller
     {
 
         $user_id = session("user.id");
+        $notes = User::find($user_id)->notes()->get()->toArray();
 
-        $user = User::find($user_id)->toArray();
-
-        dd(User::find($user_id)->notes->toArray());
-
-        die();
-
-        return view("home");
+        return view("home",["notes" => $notes]);
     }
 
     public function newNote()
