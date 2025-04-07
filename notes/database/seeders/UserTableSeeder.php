@@ -36,6 +36,29 @@ class UserTableSeeder extends Seeder
             'created_at' => now(),
         ]);
 
+        DB::table('notes')->insert([
+            'user_id' => 3,
+            'title' => 'Titulo 1 usuário 3',
+            'text' => 'Teste de gravação de comentário para o usuário 3',            
+            'created_at' => now(),
+        ]);
+
+        DB::table('notes')->insert([
+            'user_id' => 3,
+            'title' => 'Titulo 2 usuário 3',
+            'text' => 'Teste de gravação de comentário para o usuário 3',            
+            'created_at' => now(),
+        ]);
+
+        DB::table('notes')->insert([
+            'user_id' => 3,
+            'title' => 'Titulo 3 usuário 3',
+            'text' => 'Teste de gravação de comentário para o usuário 3',            
+            'created_at' => now(),
+        ]);        
+
+
+
 
     }
 }
