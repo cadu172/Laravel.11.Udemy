@@ -19,7 +19,12 @@ class MainController extends Controller
 
     public function newNote()
     {
-        return "Main controller.newNote";
+        return view("new_note");
+    }
+
+    public function newNoteSubmit()
+    {
+        return "Main controller.newNoteSubmit";
     }
 
     public function editNote($id)
