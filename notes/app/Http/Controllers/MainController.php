@@ -23,9 +23,8 @@ class MainController extends Controller
         return view("new_note");
     }
 
-    public function newNoteSubmit(Request $request)
-    {
-
+    private function validateForm(Request $request) {
+        
         // validar requisição
         $request->validate(
             [
@@ -43,6 +42,14 @@ class MainController extends Controller
             ]
         );
 
+    }
+
+    public function newNoteSubmit(Request $request)
+    {
+
+        // validate form with default function
+        $this->validateForm($request);
+
         $user_id = session("user.id");
 
         $note = new Note();
@@ -53,6 +60,31 @@ class MainController extends Controller
         $note->save();
 
         return redirect()->route("home");
+    }
+
+    public function editNoteSubmit(Request $request) {
+        
+        if ( $request->input('note_id') === null ) {
+            return redirect()->route("home");    
+        }
+
+        // validate form with default function
+        $this->validateForm($request);
+
+        // decrypt id
+        $id = Operations::decryptId($request->input('note_id'));
+
+        // find note for post edit
+        $note = Note::find($id);
+
+        if ( ! ( $note === null ) ) {
+            $note->title = $request->input("text_title");
+            $note->text = $request->input("text_note");    
+            $note->updated_at = date("Y-m-d H:i:s");
+            $note->save();
+        }
+
+        return redirect()->route("home");        
     }
 
     public function editNote($id)
