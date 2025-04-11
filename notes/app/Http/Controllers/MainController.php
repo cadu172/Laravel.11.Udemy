@@ -135,12 +135,18 @@ class MainController extends Controller
             return redirect()->route("home");
         }
 
-        // hard-delete
-        //$note->delete();
+        // hard-delete (manual)
+        //$note->delete();        
         
-        // soft-delete
-        $note->deleted_at = date("Y-m-d H:i:s");
-        $note->save();
+        // soft-delete (manual)
+        //$note->deleted_at = date("Y-m-d H:i:s");
+        //$note->save();
+
+        // soft-delete com a trait SoftDeletes no model Notes;
+        $note->delete();        
+
+        // hard-delete com a trait SoftDeletes no model Notes;
+        //$note->forceDelete();        
 
         // return to home
         return redirect()->route("home");
