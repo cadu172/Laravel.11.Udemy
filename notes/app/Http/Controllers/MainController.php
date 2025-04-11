@@ -13,7 +13,13 @@ class MainController extends Controller
     {
 
         $user_id = session("user.id");
-        $notes = User::find($user_id)->notes()->get()->toArray();
+        
+        // listar todas as notas do usuário atual (com o deleted_at nulo)
+        $notes = User::find($user_id)
+            ->notes()
+            ->whereNull('deleted_at')
+            ->get()
+            ->toArray();
 
         return view("home",["notes" => $notes]);
     }
@@ -89,8 +95,6 @@ class MainController extends Controller
 
     public function editNote($id)
     {
-        //$id = $this->decryptId($id);
-
         $id = Operations::decryptId($id);
 
         // find the note by id
@@ -107,7 +111,6 @@ class MainController extends Controller
 
     public function deleteNote($id) {
 
-        //$id = $this->decryptId($id);
         $id = Operations::decryptId($id);
 
         $note = Note::where("id", $id)->first();
@@ -120,7 +123,29 @@ class MainController extends Controller
 
     }
 
-    public function deleteNoteC
+    public function deleteNoteConfirm($id) {
+
+        // decrypt id
+        $id = Operations::decryptId($id);
+
+        // find id
+        $note = Note::find($id);
+
+        if ( $note === null ) {
+            return redirect()->route("home");
+        }
+
+        // hard-delete
+        //$note->delete();
+        
+        // soft-delete
+        $note->deleted_at = date("Y-m-d H:i:s");
+        $note->save();
+
+        // return to home
+        return redirect()->route("home");
+        
+    }
 
 
 
