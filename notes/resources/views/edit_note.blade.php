@@ -7,8 +7,6 @@
             <!-- top bar -->
             @include("top_bar")
 
-            <hr>
-
             <!-- label and cancel -->
             <div class="row">
                 <div class="col">
@@ -23,16 +21,16 @@
 
             <!-- form -->
             <form action="{{route('editNoteSubmit')}}" method="post">
-                
-                @csrf                
-                
+
+                @csrf
+
                 <input type="hidden"
                     name="note_id"
                     id="note_id"
                     value="{{ Crypt::encrypt($note->id) }}"
                     autocomplete="off"
                 />
-                
+
                 <div class="row mt-3">
                     <div class="col">
                         <div class="mb-3">

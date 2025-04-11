@@ -24,7 +24,7 @@ class MainController extends Controller
     }
 
     private function validateForm(Request $request) {
-        
+
         // validar requisição
         $request->validate(
             [
@@ -63,9 +63,9 @@ class MainController extends Controller
     }
 
     public function editNoteSubmit(Request $request) {
-        
+
         if ( $request->input('note_id') === null ) {
-            return redirect()->route("home");    
+            return redirect()->route("home");
         }
 
         // validate form with default function
@@ -79,12 +79,12 @@ class MainController extends Controller
 
         if ( ! ( $note === null ) ) {
             $note->title = $request->input("text_title");
-            $note->text = $request->input("text_note");    
+            $note->text = $request->input("text_note");
             $note->updated_at = date("Y-m-d H:i:s");
             $note->save();
         }
 
-        return redirect()->route("home");        
+        return redirect()->route("home");
     }
 
     public function editNote($id)
@@ -96,6 +96,10 @@ class MainController extends Controller
         // find the note by id
         $note = Note::find($id);
 
+        if ( $note === null ) {
+            return redirect()->route("home");
+        }
+
         // send data to the view
         return view("edit_note", ["note" => $note]);
 
@@ -105,8 +109,18 @@ class MainController extends Controller
 
         //$id = $this->decryptId($id);
         $id = Operations::decryptId($id);
-        return "Main controller.deleteNote: " . $id;
+
+        $note = Note::where("id", $id)->first();
+
+        if ( $note === null ) {
+            return redirect()->route("home");
+        }
+
+        return view("delete_note", ["note" => $note]);
+
     }
+
+    public function deleteNoteC
 
 
 

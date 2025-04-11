@@ -7,8 +7,6 @@
             <!-- top bar -->
             @include("top_bar")
 
-            <hr>
-
             <!-- label and cancel -->
             <div class="row">
                 <div class="col">
