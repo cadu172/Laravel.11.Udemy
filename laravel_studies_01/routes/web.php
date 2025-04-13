@@ -1,5 +1,45 @@
 <?php
 
+use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/','home');
+//Route::view('/','home');
+
+/**
+ *
+ * get
+ * post
+ * match
+ * any
+ * get index controller
+ * get about controller
+ * redirect
+ * redirect permanent
+ * view
+ * view com dados
+*/
+
+Route::get('/rota-get', function() {
+    return 'Rota GET';
+});
+
+Route::post('/rota-post', function() {
+    return 'Rota POST';
+});
+
+Route::match(['get', 'post'], '/rota-match', function() {
+    return 'Rota MATCH';
+});
+
+Route::any('/rota-any', function() {
+    return 'Rota ANY';
+});
+
+Route::GET('/rota-index',[MainController::class,'index'] );
+Route::GET('/rota-about',[MainController::class,'about'] );
+
+Route::redirect('/rota-redirect', '/rota-get');
+Route::permanentRedirect('/rota-redirect-permanent', '/rota-get');
+
+Route::view('rota-view', 'home');
+Route::view('rota-view-data', 'home', ['myName' => 'Carlos Eduardo']);
