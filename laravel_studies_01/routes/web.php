@@ -43,3 +43,15 @@ Route::permanentRedirect('/rota-redirect-permanent', '/rota-get');
 
 Route::view('rota-view', 'home');
 Route::view('rota-view-data', 'home', ['myName' => 'Carlos Eduardo']);
+
+/**
+ * ROTAS COM PARAMETROS
+ */
+Route::get('/rota-parametro/{id}', [MainController::class, 'rotaComParametro']);
+Route::get('/rota-dois-parametros/{value1}/{value2}', [MainController::class, 'rotaComDoisParametros']);
+Route::get('/rota-dois-parametros-request/{value1}/{value2}', [MainController::class, 'rotaComDoisParametrosComRequest']);
+
+Route::get('/rota-parametro-opcional/{value1?}', [MainController::class, 'rotaComParametroOpcional']);
+Route::get('/rota-parametro-obrigatorio-opcional/{value1}/{value2?}', [MainController::class, 'rotaComParametroObrigatorioOpcional']);
+
+Route::get('/user/{user_id}/post/{post_id}', [MainController::class, 'showUserPost']);
