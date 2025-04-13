@@ -13,7 +13,7 @@ class MainController extends Controller
     {
 
         $user_id = session("user.id");
-        
+
         // listar todas as notas do usuário atual (com o deleted_at nulo)
         $notes = User::find($user_id)
             ->notes()
@@ -80,6 +80,10 @@ class MainController extends Controller
         // decrypt id
         $id = Operations::decryptId($request->input('note_id'));
 
+        if ( $id === null ) {
+            return redirect()->route("home");
+        }
+
         // find note for post edit
         $note = Note::find($id);
 
@@ -97,6 +101,10 @@ class MainController extends Controller
     {
         $id = Operations::decryptId($id);
 
+        if ( $id === null ) {
+            return redirect()->route("home");
+        }
+
         // find the note by id
         $note = Note::find($id);
 
@@ -113,6 +121,10 @@ class MainController extends Controller
 
         $id = Operations::decryptId($id);
 
+        if ( $id === null ) {
+            return redirect()->route("home");
+        }
+
         $note = Note::where("id", $id)->first();
 
         if ( $note === null ) {
@@ -128,6 +140,10 @@ class MainController extends Controller
         // decrypt id
         $id = Operations::decryptId($id);
 
+        if ( $id === null ) {
+            return redirect()->route("home");
+        }
+
         // find id
         $note = Note::find($id);
 
@@ -136,21 +152,21 @@ class MainController extends Controller
         }
 
         // hard-delete (manual)
-        //$note->delete();        
-        
+        //$note->delete();
+
         // soft-delete (manual)
         //$note->deleted_at = date("Y-m-d H:i:s");
         //$note->save();
 
         // soft-delete com a trait SoftDeletes no model Notes;
-        $note->delete();        
+        $note->delete();
 
         // hard-delete com a trait SoftDeletes no model Notes;
-        //$note->forceDelete();        
+        //$note->forceDelete();
 
         // return to home
         return redirect()->route("home");
-        
+
     }
 
 

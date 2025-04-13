@@ -17,7 +17,8 @@ class Operations
             $id = Crypt::decrypt($id);
         }
         catch (DecryptException $e ) {
-            return redirect()->route("home");
+            //return redirect()->route("home");
+            $id = null;
         }
         return $id;
     }
