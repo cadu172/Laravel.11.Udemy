@@ -55,3 +55,23 @@ Route::get('/rota-parametro-opcional/{value1?}', [MainController::class, 'rotaCo
 Route::get('/rota-parametro-obrigatorio-opcional/{value1}/{value2?}', [MainController::class, 'rotaComParametroObrigatorioOpcional']);
 
 Route::get('/user/{user_id}/post/{post_id}', [MainController::class, 'showUserPost']);
+
+/**
+ * routes with constraints
+ */
+Route::get('exp1/{value}', function($value) {
+    return $value;
+})->where('value', '[0-9]+');
+
+Route::get('exp2/{value}', function($value) {
+    return $value;
+})->where('value', '[A-Za-z0-9]+');
+
+Route::get('exp3/{value1}/{value2}', function($value1, $value2) {
+    return "value1 = $value1 and value2 = $value2";
+})->where(
+    [
+        'value1' => '[0-9]+',
+        'value2' => '[A-Za-z0-9]+'
+    ]
+);
