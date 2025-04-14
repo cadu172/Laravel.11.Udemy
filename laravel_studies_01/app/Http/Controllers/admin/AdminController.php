@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function index(): void {
-        echo "AdminController index";
+    public function teste($value): string {
+        return $this->cleanUpperCaseString($value);
     }
 }
