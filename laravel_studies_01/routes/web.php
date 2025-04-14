@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\UserController;
+use App\Http\Middleware\OnlyAdmin;
 use Illuminate\Support\Facades\Route;
 
 //Route::view('/','home');
@@ -75,3 +77,50 @@ Route::get('exp3/{value1}/{value2}', function($value1, $value2) {
         'value2' => '[A-Za-z0-9]+'
     ]
 );
+
+/**
+ * ROTAS NOMEADAS
+ */
+Route::get('/rota-nomeada', function() {
+    return 'Rota Nomeada';
+})->name('rota.nomeada');
+
+Route::get('/rota-redirecionada', function() {
+    return redirect()->route('rota.nomeada');
+});
+
+Route::prefix('admin')->group(function() {
+    Route::get('/home', [MainController::class, 'index']);
+    Route::get('/about', [MainController::class, 'about']);
+    Route::get('/management', [MainController::class, 'showUserPost']);
+});
+
+Route::get('/admin/only', function() {
+    return 'Rota admin only';
+})->middleware(OnlyAdmin::class);
+
+Route::middleware(OnlyAdmin::class)->group(function() {
+
+    Route::get('/admin/only2', function() {
+        return 'Rota admin only 2';
+    });
+
+    Route::get('/admin/only3', function() {
+        return 'Rota admin only 3';
+    });
+
+});
+
+Route::controller(UserController::class)->group(function() {
+    Route::get('/user', 'index');
+    Route::get('/user/create', 'create');
+    Route::post('/user/store', 'store');
+    Route::get('/user/{id}', 'show');
+    Route::get('/user/{id}/edit', 'edit');
+    Route::put('/user/{id}', 'update');
+    Route::delete('/user/{id}', 'destroy');
+});
+
+Route::fallback(function() {
+    return 'Rota não encontrada';
+});
