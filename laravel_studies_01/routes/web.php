@@ -14,8 +14,15 @@ use Illuminate\Support\Facades\Route as FacadesRoute;
 //Route::get("/about", [MainController::class, "about"])->name("about")->middleware([StartMiddleware::class,EndMiddleware::class]);
 //Route::get("/contact", [MainController::class, "contact"])->name("contact");
 
-Route::middleware([StartMiddleware::class,EndMiddleware::class])->group(function(){
+//Route::middleware([StartMiddleware::class,EndMiddleware::class])->group(function(){
+//    Route::get("/", [MainController::class, "index"])->name("index");
+//    Route::get("/about", [MainController::class, "about"])->name("about")->withOutMiddleware([EndMiddleware::class]);
+//    Route::get("/contact", [MainController::class, "contact"])->name("contact");
+//});
+
+Route::middleware('grupo_executar_depois')->group(function() {
     Route::get("/", [MainController::class, "index"])->name("index");
-    Route::get("/about", [MainController::class, "about"])->name("about")->withOutMiddleware([EndMiddleware::class]);
+    Route::get("/about", [MainController::class, "about"])->name("about");
     Route::get("/contact", [MainController::class, "contact"])->name("contact");
+
 });
