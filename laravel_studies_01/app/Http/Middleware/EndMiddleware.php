@@ -17,7 +17,7 @@ class EndMiddleware
     {
         $response = $next($request);
 
-        echo "Passou pelo middleware EndMiddleware depois do controlador<br>";
+        echo "<p>EndMiddleware</p>";
 
         // continua o envio da requisição
         return $response;

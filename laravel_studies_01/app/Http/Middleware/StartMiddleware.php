@@ -16,7 +16,7 @@ class StartMiddleware
     public function handle(Request $request, Closure $next): Response
     {
 
-        echo "Passou pelo middleware StartMiddleware antes do controlador<br>";
+        echo "<p>StartMiddleware</p>";
 
         return $next($request);
     }
