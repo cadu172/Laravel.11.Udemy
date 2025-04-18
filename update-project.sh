@@ -36,7 +36,7 @@ sleep 5
 ./vendor/bin/sail artisan migrate
 
 # run seeder
-./vendor/bin/sail artisan db:seed
+#./vendor/bin/sail artisan db:seed
 
 # run vite server
 ./vendor/bin/sail npm run dev
