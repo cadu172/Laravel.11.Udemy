@@ -18,4 +18,8 @@ class MainController extends Controller
             ]
         );
     }
+
+    public function submitForm(): void {
+        echo "submitForm executado";
+    }
 }

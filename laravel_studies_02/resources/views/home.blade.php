@@ -1,37 +1,33 @@
 @extends('layouts.main_layout')
 @section('content')
 
-{{-- estrutura for --}}
-@for ($index=0;$index<10;$index++)
 
-    {{-- continue no indice 5 (pular este indice) --}}
-    @if ($index==5)
-        @continue
-    @endif
+<div class="container col-md-4 mt-5">
+    <form action="{{route('submit')}}" method="POST">
+        @csrf
+        <div class="form-group mb-2">
+          <label for="username">User Name (E-Mail)</label>
+          <input type="email" class="form-control" id="username" />
+        </div>
+        <div class="form-group mb-2">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" id="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>
 
-    <p>{{$index}}</p>
+@php
+    $valor = 100;
+    $html = '<strong><span class="text-info">' . $valor . '</span></strong>';
+    $name = "Carlos Eduardo dos Santos";
+@endphp
 
-    {{-- break no indice 7 --}}
-    @if ($index==7)
-        @break
-    @endif
+<p>{{$valor}}</p>
+<p>{{$html}}</p>
+<p>{!! $html !!}</p>
+<p>{{$valor}} x 1000 é igual à: {{$valor*1000}}</p>
+<p>$name contem {{strlen($name)}} caracteres, seu valor é: {{$name}}</p>
 
-@endfor
-
-<hr />
-
-@foreach ($cities as $city)
-    <p>
-        {{$loop->index . " - " . $city}}
-        @if ($loop->first)
-            <strong> (Primeira Cidade)</strong>
-        @elseif ($loop->last)
-            <strong> (Última Cidade)</strong>
-        @endif
-
-    </p>
-@endforeach
-
-<hr />
 
 @endsection
