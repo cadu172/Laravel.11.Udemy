@@ -28,4 +28,16 @@ class MainController extends Controller
 
         echo "submitForm executado";
     }
+
+    public function setSession(): View {
+        session(['name' => 'Carlos Eduardo']);
+        return view('home');
+    }
+
+
+    public function clearSession(): View {
+        session()->forget('name');
+        return view('home');
+    }
+
 }
