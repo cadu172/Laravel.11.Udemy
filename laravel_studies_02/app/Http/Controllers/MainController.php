@@ -19,7 +19,13 @@ class MainController extends Controller
         );
     }
 
-    public function submitForm(): void {
+    public function submitForm(Request $request): void {
+
+        $request->validate([
+            'name' => 'required|max:255',
+            'country' => 'required|max:255',
+        ]);
+
         echo "submitForm executado";
     }
 }

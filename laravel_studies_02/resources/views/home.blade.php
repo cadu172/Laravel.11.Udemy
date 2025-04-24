@@ -1,33 +1,64 @@
 @extends('layouts.main_layout')
 @section('content')
 
-
-<div class="container col-md-4 mt-5">
-    <form action="{{route('submit')}}" method="POST">
-        @csrf
-        <div class="form-group mb-2">
-          <label for="username">User Name (E-Mail)</label>
-          <input type="email" class="form-control" id="username" />
+@production
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Welcome to the Home Page</h1>
+                <p>This is the home page of our application.</p>
+            </div>
         </div>
-        <div class="form-group mb-2">
-          <label for="password">Password</label>
-          <input type="password" class="form-control" id="password">
+    </div>
+@else
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Welcome to the Development Environment</h1>
+                <p>This is the development version of our application.</p>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary">Login</button>
-    </form>
-</div>
+    </div>
+@endproduction
 
-@php
-    $valor = 100;
-    $html = '<strong><span class="text-info">' . $valor . '</span></strong>';
-    $name = "Carlos Eduardo dos Santos";
-@endphp
 
-<p>{{$valor}}</p>
-<p>{{$html}}</p>
-<p>{!! $html !!}</p>
-<p>{{$valor}} x 1000 é igual à: {{$valor*1000}}</p>
-<p>$name contem {{strlen($name)}} caracteres, seu valor é: {{$name}}</p>
+@env(['local','production','development'])
+    <p>Estou no ambiente {{env('APP_ENV')}}</p>
+@endenv
 
+<form action="{{route("submit")}}" method="post">
+
+    @csrf
+
+    <div class="container sm">
+
+        <div class="row">
+            <label for="name">Name:</label>
+            <input type="text" name="name" placeholder="Enter your name">
+            @error('name')
+                <div class="alert alert-danger">
+                    {{ $message }}
+                </div>
+            @enderror
+
+        </div>
+
+        <div class="row">
+            <label for="country">Country:</label>
+            <input type="text" name="country" placeholder="Enter your country">
+            @error('country')
+                <div class="alert alert-danger">
+                    {{ $message }}
+                </div>
+            @enderror
+
+        </div>
+
+        <button type="submit">Submit</button>
+
+    </div>
+
+
+</form>
 
 @endsection
