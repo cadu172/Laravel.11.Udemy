@@ -103,11 +103,21 @@
 
         </div>
 
+        {{--  erros --}}
+        @if($errors->any())
+        <div class="container mt-3">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Ops!</strong> {{$errors->first()}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        @endif
+
     </form>
 
     <!-- footer -->
     <footer class="text-center mt-5">
-        <p class="text-secondary">MathX &copy; <span class="text-info">[ANO]</span></p>
+        <p class="text-secondary">MathX &copy; <span class="text-info">{{date('Y')}}</span></p>
     </footer>
 
     <!-- bootstrap -->
