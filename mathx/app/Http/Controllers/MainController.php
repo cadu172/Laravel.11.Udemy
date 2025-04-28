@@ -40,51 +40,14 @@ class MainController extends Controller
         $exercises = [];
 
         for($index=1;$index<=$numberExercises;$index++) {
-
-            // pegar aleatoriamente uma operação
-            $operation = $operations[array_rand($operations)];
-
-            // obter o número 1 e número 2 aleatoriamente
-            $number1 = rand($min, $max);
-            $number2 = rand($min, $max);
-
-            switch ($operation) {
-                case 'sum':
-                    $exercise = "$number1 + $number2";
-                    $sollution = $number1 + $number2;
-                    break;
-                case 'subtraction':
-                    $exercise = "$number1 - $number2";
-                    $sollution = $number1 - $number2;
-                    break;
-                case 'multiplication':
-                    $exercise = "$number1 x $number2";
-                    $sollution = $number1 * $number2;
-                    break;
-                case 'division':
-
-                    if ($number2 == 0) {
-                        $number2 = 1;
-                    }
-
-                    $exercise = "$number1 : $number2";
-                    $sollution = $number1 / $number2;
-                    break;
-            }
-
-            if (  is_float($sollution) ) {
-                $sollution = number_format($sollution, 2);
-            }
-
-            $exercises[] = [
-                'operation' => $operation,
-                'exercise_number' => $index,
-                'exercise' => $exercise . " = ?",
-                'sollution' => $exercise . " = " . $sollution,
-            ];
+            $exercises[] = $this->generateOneExercise($index, $operations, $min, $max);
 
         }
 
+        // salvar resultados na sessão
+        session(['exercises' => $exercises]);
+
+        // redirecionar para a página de operações
         return view("operations", ["exercises" => $exercises]);
 
     }
@@ -95,6 +58,52 @@ class MainController extends Controller
 
     public function exportExercises() {
         return "Export exercises route";
+    }
+
+    private function generateOneExercise($index, $operations, $min, $max) {
+
+        // pegar aleatoriamente uma operação
+        $operation = $operations[array_rand($operations)];
+
+        // obter o número 1 e número 2 aleatoriamente
+        $number1 = rand($min, $max);
+        $number2 = rand($min, $max);
+
+        switch ($operation) {
+            case 'sum':
+                $exercise = "$number1 + $number2";
+                $sollution = $number1 + $number2;
+                break;
+            case 'subtraction':
+                $exercise = "$number1 - $number2";
+                $sollution = $number1 - $number2;
+                break;
+            case 'multiplication':
+                $exercise = "$number1 x $number2";
+                $sollution = $number1 * $number2;
+                break;
+            case 'division':
+
+                if ($number2 == 0) {
+                    $number2 = 1;
+                }
+
+                $exercise = "$number1 : $number2";
+                $sollution = $number1 / $number2;
+                break;
+        }
+
+        if (  is_float($sollution) ) {
+            $sollution = number_format($sollution, 2);
+        }
+
+        return [
+            'operation' => $operation,
+            'exercise_number' => $index,
+            'exercise' => $exercise . " = ?",
+            'sollution' => $exercise . " = " . $sollution,
+        ];
+
     }
 
 }
