@@ -85,7 +85,7 @@ class MainController extends Controller
 
         }
 
-        dd($exercises);
+        return view("operations", ["exercises" => $exercises]);
 
     }
 
