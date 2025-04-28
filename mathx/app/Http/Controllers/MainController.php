@@ -58,16 +58,26 @@ class MainController extends Controller
                     $sollution = $number1 - $number2;
                     break;
                 case 'multiplication':
-                    $exercise = "$number1 * $number2";
+                    $exercise = "$number1 x $number2";
                     $sollution = $number1 * $number2;
                     break;
                 case 'division':
-                    $exercise = "$number1 / $number2";
+
+                    if ($number2 == 0) {
+                        $number2 = 1;
+                    }
+
+                    $exercise = "$number1 : $number2";
                     $sollution = $number1 / $number2;
                     break;
             }
 
+            if (  is_float($sollution) ) {
+                $sollution = number_format($sollution, 2);
+            }
+
             $exercises[] = [
+                'operation' => $operation,
                 'exercise_number' => $index,
                 'exercise' => $exercise . " = ?",
                 'sollution' => $exercise . " = " . $sollution,
