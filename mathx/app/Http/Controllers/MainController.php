@@ -11,7 +11,7 @@ class MainController extends Controller
         return view("home");
     }
 
-    public function generateExercises(Request $request) {
+    public function generateExercises(Request $request): View {
 
         $validated = $request->validate([
             'check_sum' => 'required_without_all:check_subtraction,check_multiplication,check_division',
@@ -52,15 +52,7 @@ class MainController extends Controller
 
     }
 
-    public function printExercises() {
-        return "Print exercises route";
-    }
-
-    public function exportExercises() {
-        return "Export exercises route";
-    }
-
-    private function generateOneExercise($index, $operations, $min, $max) {
+    private function generateOneExercise($index, $operations, $min, $max) : array {
 
         // pegar aleatoriamente uma operação
         $operation = $operations[array_rand($operations)];
@@ -104,6 +96,36 @@ class MainController extends Controller
             'sollution' => $exercise . " = " . $sollution,
         ];
 
+    }
+
+    public function printExercises()  {
+
+        if (! session()->has('exercises') ) {
+            return redirect()->route("home");
+        }
+
+        echo "<pre>";
+        echo "<h1>Exercícios de Matemática ". env("APP_NAME") ."</h1>";
+        echo "<hr />";
+
+        // array contendo os exercicios carregados através da session
+        $exercises = session("exercises");
+
+        foreach($exercises as $item) {
+            echo "<h2><small>" . str_pad($item["exercise_number"],2,"0",STR_PAD_LEFT) . "</small> => " . $item["exercise"] . "</h2>";
+        }
+
+        echo "<hr />";
+        echo "<h3>Soluções dos exercícios</h3>";
+
+        foreach($exercises as $item) {
+            echo "<small>" . str_pad($item["exercise_number"],2,"0",STR_PAD_LEFT) . " => " . $item["sollution"] . "</small><br />";
+        }
+
+    }
+
+    public function exportExercises(): string {
+        return "Export exercises route";
     }
 
 }
