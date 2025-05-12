@@ -91,7 +91,7 @@ class MainController extends Controller
 
         return [
             'operation' => $operation,
-            'exercise_number' => $index,
+            'exercise_number' => str_pad($index,2,"0",STR_PAD_LEFT),
             'exercise' => $exercise . " = ?",
             'sollution' => $exercise . " = " . $sollution,
         ];
@@ -112,20 +112,49 @@ class MainController extends Controller
         $exercises = session("exercises");
 
         foreach($exercises as $item) {
-            echo "<h2><small>" . str_pad($item["exercise_number"],2,"0",STR_PAD_LEFT) . "</small> => " . $item["exercise"] . "</h2>";
+            echo "<h2><small>" . $item["exercise_number"] . "</small> => " . $item["exercise"] . "</h2>";
         }
 
         echo "<hr />";
         echo "<h3>Soluções dos exercícios</h3>";
 
         foreach($exercises as $item) {
-            echo "<small>" . str_pad($item["exercise_number"],2,"0",STR_PAD_LEFT) . " => " . $item["sollution"] . "</small><br />";
+            echo "<small>" . $item["exercise_number"] . " => " . $item["sollution"] . "</small><br />";
         }
 
     }
 
-    public function exportExercises(): string {
-        return "Export exercises route";
+    public function exportExercises() {
+
+        if (! session()->has('exercises') ) {
+            return redirect()->route("home");
+        }
+
+        // array contendo os exercicios carregados através da session
+        $exercises = session("exercises");
+
+        // inicializar conteudo de saida
+        $content = "Exercícios de Matemática ". env("APP_NAME") ."\n";
+
+        foreach($exercises as $item) {
+            $content = $content . $item["exercise_number"] . " => " . $item["exercise"] . "\n";
+        }
+
+        $content = $content . str_repeat("-",20) . "\n\n";
+        $content = $content . "Soluções\n";
+
+        // sollutions
+        foreach($exercises as $item) {
+            $content = $content . $item["exercise_number"] . " => " . $item["sollution"] . "\n";
+        }
+
+        // nome do arquivo que será usado na exportação
+        $fileName = "exercises_" . env("APP_NAME") . "_".date('YmdHis').".txt";
+
+        return response($content)
+            ->header('Content-Type','text/plain')
+            ->header('Content-Disposition','attachment;filename="' . $fileName . '"');
+
     }
 
 }
