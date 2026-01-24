@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         @foreach ($pessoas as $pessoa=>$idiomas)
-            <x-card-pessoa :nome-pessoa="$pessoa" :idiomas="$idiomas"  />
+            <x-card-pessoa :$pessoa :$idiomas  />
         @endforeach
     </div>
 </div>
