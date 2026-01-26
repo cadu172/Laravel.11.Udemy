@@ -12,7 +12,7 @@
             <h1 class="text-danger">Aqui estou passando o conteúdo do Slot</h1>
         </x-other-card>--}}
 
-
+        {{--
         <x-multi-slot>
             <x-slot:title>Título passado ao Slot</x-slot:title>
             <x-slot:content>Conteúdo do Slot</x-slot:content>
@@ -26,6 +26,12 @@
                 </ul>
             </x-slot:footer>
         </x-multi-slot>
+        --}}
+
+        <x-alert-card>Primeiro Alert</x-alert-card>
+        <x-alert-card>Segundo Alert</x-alert-card>
+        <x-alert-card>Terceiro Alert</x-alert-card>
+
     </div>
 </div>
 @endsection
