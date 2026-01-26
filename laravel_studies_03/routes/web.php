@@ -7,4 +7,6 @@ Route::get('/', function () {
     return "Blade Layouts";
 });
 
-Route::GET('/home', [MainController::class,'showPage'])->name('home');
+Route::view('/home', 'home');
+Route::view('/about', 'about');
+Route::view('/contact', 'contact');
