@@ -1,5 +1,5 @@
 <div class="card col mt-5 me-2" style="width: 18rem;">
-  <h2>{{$pessoa}}</h2>
+  <h2 class="{{ $colorName() ? 'text-info' : '' }}">  {{$pessoa}}</h2>
   <div class="card-body">
     <h5 class="card-title">Idiomas que Domina</h5>
     <ul>

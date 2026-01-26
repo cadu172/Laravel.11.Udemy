@@ -26,4 +26,15 @@ class CardPessoa extends Component
     {
         return view('components.card-pessoa');
     }
+
+    public function shouldRender() : bool {
+        return count($this->idiomas) > 0;
+    }
+
+    public function colorName() : bool {
+        return 
+        ($this->pessoa === 'Eduardo') || 
+        ($this->pessoa === 'Roberto');
+    }
+
 }

@@ -24,6 +24,12 @@ class MainController extends Controller
                 'Português',
                 'Mandarin'
             ],
+            'Santos' => [
+                'Português',                
+            ],            
+            'Roberto' => [
+                'Português',                
+            ],
         ];
 
         return view('home',['pessoas'=>$data]);
