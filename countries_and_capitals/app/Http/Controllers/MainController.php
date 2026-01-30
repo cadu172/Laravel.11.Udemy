@@ -43,7 +43,58 @@ class MainController extends Controller
 
     }
 
-    private function prepareQuiz($total_questions) {
-        return $total_questions;
+    private function prepareQuiz($p_total_questions) {
+        
+        // inicializar questionário de perguntas
+        $questions = [];
+
+        // quantidade de itens no array original
+        $total_countries = count($this->app_data);
+        
+        // indices de perguntas selecionadas
+        $array_indexes = range(0, $total_countries-1, 1);
+
+        // embaralhar indices
+        shuffle($array_indexes);
+
+        // obter os "n" indices iniciais apos embaralhar
+        $array_indexes = array_slice($array_indexes, 0, $p_total_questions);
+
+        // numero da questão
+        $question_number = 1;
+
+        foreach($array_indexes as $index) {
+
+            // país e capital correto
+            $question['question_number'] = $question_number;
+            $question['country'] = $this->app_data[$index]['country'];
+            $question['correct_answer'] = $this->app_data[$index]['capital'];
+            $question['correct'] = null;
+
+            // capitais incorretas
+            $wrong_answers = array_column($this->app_data, 'capital');
+
+            // remover capital correta do array de opções incorretas
+            $wrong_answers = array_diff($wrong_answers, [$question['correct_answer']]);
+
+            // embaralhar array de capitais incorretas
+            shuffle($wrong_answers);
+
+            // obter somente os 3 itens iniciais do novo array
+            $wrong_answers = array_slice($wrong_answers,0,3);
+
+            // associar opções inválidas
+            $question['wrong_capitals'] = $wrong_answers; 
+
+            // incluir pais/capital atual no array de retorno
+            $questions[] = $question;
+
+            // incrementar número da questão
+            $question_number++;
+
+        }
+
+        return $questions;
+
     }
 }
