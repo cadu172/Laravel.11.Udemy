@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class MainController extends Controller
 {
@@ -13,7 +14,7 @@ class MainController extends Controller
         $this->app_data = require(app_path('app_data.php'));
     }
 
-    public function startGame()
+    public function startGame(): View
     {
         return view('home');
     }
@@ -39,7 +40,19 @@ class MainController extends Controller
 
         $quiz = $this->prepareQuiz($total_questions);
 
-        dd($quiz);
+        // salvar o quiz na sessão
+        session()->put([
+            'quiz' => $quiz,
+            'total_questions' => $total_questions,
+            'current_question' => 1,
+            'corrent_answers' => 0,
+            'wrong_answers' => 0
+
+        ]);
+
+        // encaminhar para a view game
+        //return redirect()->route('game');
+        return $this->game();
 
     }
 
@@ -84,7 +97,7 @@ class MainController extends Controller
             $wrong_answers = array_slice($wrong_answers,0,3);
 
             // associar opções inválidas
-            $question['wrong_capitals'] = $wrong_answers; 
+            $question['wrong_answers'] = $wrong_answers; 
 
             // incluir pais/capital atual no array de retorno
             $questions[] = $question;
@@ -96,5 +109,29 @@ class MainController extends Controller
 
         return $questions;
 
+    }
+
+    public function game(): View {
+
+        $quiz = session('quiz');
+        $total_questions = session('total_questions');
+        $current_question = session('current_question')-1;
+
+        // obtem as questoes erradas
+        $answers = $quiz[$current_question]['wrong_answers'];        
+
+        // obtem a questãio certa
+        $answers[] = $quiz[$current_question]['correct_answer'];
+
+        // embaralhar array
+        shuffle($answers);
+
+        // encaminhar a view o array
+        return view('game',[
+            'country' => $quiz[$current_question]['country'],
+            'totalQuestions' => $total_questions,
+            'currentQuestion' => $current_question,
+            'answers' => $answers
+        ]);
     }
 }
