@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\View\View;
 
 class MainController extends Controller
@@ -45,8 +46,8 @@ class MainController extends Controller
             'quiz' => $quiz,
             'total_questions' => $total_questions,
             'current_question' => 1,
-            'corrent_answers' => 0,
-            'wrong_answers' => 0
+            'total_correct_answers' => 0,
+            'total_wrong_answers' => 0
 
         ]);
 
@@ -133,5 +134,57 @@ class MainController extends Controller
             'currentQuestion' => $current_question,
             'answers' => $answers
         ]);
+    }
+
+    public function answer($p_EncryptText) {
+        //dd($p_EncryptText);
+
+        try {
+            $answer = Crypt::decryptString($p_EncryptText);
+        } catch (\Exception $th) {
+            return redirect()->route('game');
+        }
+       
+        // array do quiz atualizado
+        $quiz = session('quiz');
+        
+        // id da questão atual
+        $current_question = session('current_question')-1;
+        
+        // resposta correta da questão atual
+        $correct_answer = $quiz[$current_question]['correct_answer'];
+        
+        //quantidade de respostas corretas e incorretas
+        $total_correct_answers = session('total_correct_answers');
+        $total_wrong_answers = session('total_wrong_answers');
+
+        if ( $answer === $correct_answer) {
+            $total_correct_answers++;
+            $quiz[$current_question]['correct'] = true;
+        }
+        else {
+            $total_wrong_answers++;
+            $quiz[$current_question]['correct'] = false;
+        }
+
+        // salvar o quiz na sessão
+        session()->put([
+            'quiz' => $quiz,
+            'total_correct_answers' => $total_correct_answers,
+            'total_wrong_answers' => $total_wrong_answers
+
+        ]);        
+
+
+        $data = [
+            'country' => $quiz[$current_question]['country'],
+            'correct_answer' => $correct_answer,
+            'choice_answer' => $answer,
+            'currentQuestion' => $current_question,
+            'totalQuestions' => session('totalQuestions')
+        ];
+
+        dd($data);
+        
     }
 }
