@@ -149,10 +149,10 @@ class MainController extends Controller
         $quiz = session('quiz');
         
         // id da questão atual
-        $current_question = session('current_question')-1;
+        $current_question_index = session('current_question')-1;
         
         // resposta correta da questão atual
-        $correct_answer = $quiz[$current_question]['correct_answer'];
+        $correct_answer = $quiz[$current_question_index]['correct_answer'];
         
         //quantidade de respostas corretas e incorretas
         $total_correct_answers = session('total_correct_answers');
@@ -160,11 +160,11 @@ class MainController extends Controller
 
         if ( $answer === $correct_answer) {
             $total_correct_answers++;
-            $quiz[$current_question]['correct'] = true;
+            $quiz[$current_question_index]['correct'] = true;
         }
         else {
             $total_wrong_answers++;
-            $quiz[$current_question]['correct'] = false;
+            $quiz[$current_question_index]['correct'] = false;
         }
 
         // salvar o quiz na sessão
@@ -177,10 +177,10 @@ class MainController extends Controller
 
 
         $data = [
-            'country' => $quiz[$current_question]['country'],
+            'country' => $quiz[$current_question_index]['country'],
             'correct_answer' => $correct_answer,
             'choice_answer' => $answer,
-            'currentQuestion' => $current_question,
+            'currentQuestion' => $current_question_index,
             'totalQuestions' => session('totalQuestions')
         ];
 
