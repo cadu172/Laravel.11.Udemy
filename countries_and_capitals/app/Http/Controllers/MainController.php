@@ -58,13 +58,13 @@ class MainController extends Controller
     }
 
     private function prepareQuiz($p_total_questions) {
-        
+
         // inicializar questionário de perguntas
         $questions = [];
 
         // quantidade de itens no array original
         $total_countries = count($this->app_data);
-        
+
         // indices de perguntas selecionadas
         $array_indexes = range(0, $total_countries-1, 1);
 
@@ -98,7 +98,7 @@ class MainController extends Controller
             $wrong_answers = array_slice($wrong_answers,0,3);
 
             // associar opções inválidas
-            $question['wrong_answers'] = $wrong_answers; 
+            $question['wrong_answers'] = $wrong_answers;
 
             // incluir pais/capital atual no array de retorno
             $questions[] = $question;
@@ -116,20 +116,21 @@ class MainController extends Controller
 
         $quiz = session('quiz');
         $total_questions = session('total_questions');
-        $current_question = session('current_question')-1;
+        $current_question = session('current_question');
+        $question_index = $current_question-1;
 
         // obtem as questoes erradas
-        $answers = $quiz[$current_question]['wrong_answers'];        
+        $answers = $quiz[$question_index]['wrong_answers'];
 
         // obtem a questãio certa
-        $answers[] = $quiz[$current_question]['correct_answer'];
+        $answers[] = $quiz[$question_index]['correct_answer'];
 
         // embaralhar array
         shuffle($answers);
 
         // encaminhar a view o array
         return view('game',[
-            'country' => $quiz[$current_question]['country'],
+            'country' => $quiz[$question_index]['country'],
             'totalQuestions' => $total_questions,
             'currentQuestion' => $current_question,
             'answers' => $answers
@@ -144,16 +145,19 @@ class MainController extends Controller
         } catch (\Exception $th) {
             return redirect()->route('game');
         }
-       
+
         // array do quiz atualizado
         $quiz = session('quiz');
-        
+
         // id da questão atual
-        $current_question_index = session('current_question')-1;
-        
+        $current_question = session('current_question');
+
+        // id da questão atual
+        $current_question_index = $current_question - 1;
+
         // resposta correta da questão atual
         $correct_answer = $quiz[$current_question_index]['correct_answer'];
-        
+
         //quantidade de respostas corretas e incorretas
         $total_correct_answers = session('total_correct_answers');
         $total_wrong_answers = session('total_wrong_answers');
@@ -167,24 +171,25 @@ class MainController extends Controller
             $quiz[$current_question_index]['correct'] = false;
         }
 
-        // salvar o quiz na sessão
-        session()->put([
-            'quiz' => $quiz,
-            'total_correct_answers' => $total_correct_answers,
-            'total_wrong_answers' => $total_wrong_answers
-
-        ]);        
-
-
+        // informação que será enviada para view
         $data = [
             'country' => $quiz[$current_question_index]['country'],
             'correct_answer' => $correct_answer,
             'choice_answer' => $answer,
-            'currentQuestion' => $current_question_index,
-            'totalQuestions' => session('totalQuestions')
+            'currentQuestion' => $current_question,
+            'totalQuestions' => session('total_questions')
         ];
 
-        dd($data);
-        
+        // atualização das informações de sessão
+        session()->put([
+            'quiz' => $quiz,
+            'total_correct_answers' => $total_correct_answers,
+            'total_wrong_answers' => $total_wrong_answers,
+            'current_question' => $current_question + 1,
+        ]);
+
+        // retorna a view com o resultado
+        return view('answer_result',$data);
+
     }
 }
