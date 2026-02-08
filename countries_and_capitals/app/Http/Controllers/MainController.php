@@ -117,6 +117,13 @@ class MainController extends Controller
         $quiz = session('quiz');
         $total_questions = session('total_questions');
         $current_question = session('current_question');
+
+        // caso tenha chegado ao fim, encaminhar para a página de resultados
+        if ( $current_question > $total_questions ) {
+            return $this->show_results();
+        }
+
+        // indice atual das respostas
         $question_index = $current_question-1;
 
         // obtem as questoes erradas
@@ -137,7 +144,7 @@ class MainController extends Controller
         ]);
     }
 
-    public function answer($p_EncryptText) {
+    public function answer($p_EncryptText): View {
         //dd($p_EncryptText);
 
         try {
@@ -191,5 +198,10 @@ class MainController extends Controller
         // retorna a view com o resultado
         return view('answer_result',$data);
 
+    }
+
+    public function show_results(): View {
+        dd(session()->all());
+        //return false;
     }
 }
