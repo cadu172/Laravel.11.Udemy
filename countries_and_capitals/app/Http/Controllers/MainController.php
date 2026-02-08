@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\View\View;
+use Illuminate\Support\Number;
 
 class MainController extends Controller
 {
@@ -150,7 +151,8 @@ class MainController extends Controller
         try {
             $answer = Crypt::decryptString($p_EncryptText);
         } catch (\Exception $th) {
-            return redirect()->route('game');
+            //return redirect()->route('game');
+            return $this->game();
         }
 
         // array do quiz atualizado
@@ -201,7 +203,21 @@ class MainController extends Controller
     }
 
     public function show_results(): View {
-        dd(session()->all());
-        //return false;
+        //dd(session()->all());
+
+        $total_questions = session('total_questions');
+        $total_correct_answers = session('total_correct_answers');
+        $total_wrong_answers = session('total_wrong_answers');
+
+        // calculo do percentual de acerto
+        $percentage = $total_correct_answers / $total_questions * 100;
+
+        // encaminhar para view os resultados
+        return view('final_results',[
+            'total_questions' => $total_questions,
+            'total_correct_answers' => $total_correct_answers,
+            'total_wrong_answers' => $total_wrong_answers,
+            'percentage' => Number::percentage($percentage, locale: 'pt_BR')
+        ]);
     }
 }
