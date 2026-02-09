@@ -38,3 +38,25 @@ Route::get('/sqlite', function() {
     }
 
 });
+
+
+Route::get('/mysql_test_two_databases', function() {
+
+    try {
+        
+        DB::connection('mysql_app')->getPdo();
+        echo "Conexão mysql_auth realizada com sucesso: " . DB::connection()->getDatabaseName();
+        echo "<hr />";
+
+        DB::connection('mysql_users')->getPdo();
+        echo "Conexão mysql_users realizada com sucesso: " . DB::connection()->getDatabaseName();
+        echo "<hr />";
+
+
+    } catch (\Exception $e) {
+        
+        dd("Erro ao conectar-se: " . $e->getMessage());
+
+    }
+
+});
