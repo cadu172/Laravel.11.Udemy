@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql_users'),
+    'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -30,48 +30,6 @@ return [
     */
 
     'connections' => [
-
-        'mysql_users' => [
-            'driver' => 'mysql',
-            'url' => '',
-            'host' => 'mysql', //dentro do docker retorna 127.0.0.1
-            'port' => 3306,
-            'database' => 'laravel',
-            'username' => 'sail',
-            'password' => 'password',
-            'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => env('DB_CHARSET', 'utf8mb4'),
-            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'strict' => true,
-            'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
-        ],
-
-        'mysql_app' => [
-            'driver' => 'mysql',
-            'url' => '',
-            'host' => 'mysql', //dentro do docker retorna 127.0.0.1
-            'port' => 3306,
-            'database' => 'laravel',
-            'username' => 'sail',
-            'password' => 'password',
-            'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => env('DB_CHARSET', 'utf8mb4'),
-            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'strict' => true,
-            'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
-        ],
-
-
 
         'mysql' => [
             'driver' => 'mysql',
@@ -91,8 +49,7 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
-        ],
-        
+        ],       
 
     ],
 
