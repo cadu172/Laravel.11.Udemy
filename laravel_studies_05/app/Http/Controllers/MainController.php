@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
 
 class MainController extends Controller
 {
@@ -12,55 +13,36 @@ class MainController extends Controller
      */
     public function index()
     {
-        DB::connection()->getPdo();
-        return 'OK';
+        $data = DB::table('clients')->get();
+        //$this->showRawData($data);
+        $this->showTableData($data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    private function showRawData(Collection $p_Data) {
+        echo '<pre>';
+        print_r($p_Data);
+        echo '</pre>';
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    private function showTableData(Collection $p_Data) {
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        echo '<table border="1">';
+        echo '<tr>';
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        foreach ($p_Data[0] as $key => $value) {
+            echo '<th>' . $key . '</th>';
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        echo '</tr>';
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        foreach ($p_Data as $item) {
+            echo '<tr>';
+            foreach ($item as $key => $value) {
+                echo '<td>' . $value . '</td>';
+            }
+            echo '</tr>';
+        }
+
+        echo '</table>';
     }
 }
