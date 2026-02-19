@@ -41,13 +41,36 @@ class MainController extends Controller
             ->last();*/
 
         // retorna um id especifico, no exemplo o id 23
-        $results = DB::table('products')->find(23);
+        //$results = DB::table('products')->find(23);
+
+
+        //select simples sem where
+        /*$results = DB::table('products')
+            ->select('product_name', 'price')
+            ->get();*/
+
+        // produtos com preço acima de 70,00
+        /*$results = DB::table('products')
+            ->where('price','>',70.00)
+            ->get();*/
+
+        // produtos acima de 70.00 e iniciados com a letra A
+        /*$results = DB::table('products')
+                    ->where('price','>',70.00)
+                    ->where('product_name','like','A%')
+                    ->get();*/
+
+        // produtos acima de 70.00 ou que iniciam com a letra A
+        $results = DB::table('products')
+                    ->where('price','>',70.00)
+                    ->whereOr('product_name','like','A%')
+                    ->get();
 
         // imprime o conteudo da collection em formato de tabela
-        //$this->showTableData($products);
+        $this->showTableData($results);
 
         // imprime o conteudo da tabela clients em formato de tabela
-        $this->showRawData($results);
+        //$this->showRawData($results);
 
 
     }
